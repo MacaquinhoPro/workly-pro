@@ -1,17 +1,17 @@
-import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
 import { app } from '@/utils/firebaseconfig';
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithCredential,
-  GoogleAuthProvider,
-} from 'firebase/auth';
-import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import Constants from 'expo-constants';
+import { useRouter } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithCredential,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import { Button, Text, TextInput, View } from 'react-native';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -23,7 +23,7 @@ export default function Login() {
   const [error, setError] = useState('');
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: Constants.expoConfig?.extra?.GOOGLE_EXPO_CLIENT_ID,
+    clientId: Constants.expoConfig?.extra?.GOOGLE_EXPO_CLIENT_ID,
     iosClientId: Constants.expoConfig?.extra?.GOOGLE_IOS_CLIENT_ID,
     androidClientId: Constants.expoConfig?.extra?.GOOGLE_ANDROID_CLIENT_ID,
     webClientId: Constants.expoConfig?.extra?.GOOGLE_WEB_CLIENT_ID,
