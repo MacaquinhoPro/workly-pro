@@ -1,22 +1,17 @@
-// Import the functions you need from the SDKs you need
-import { getAnalytics } from "firebase/analytics";
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-import Constants from "expo-constants";
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
+import Constants from 'expo-constants';
 
 const firebaseConfig = {
-  apiKey: Constants.expoConfig.extra.APIKEY,
-  authDomain: ,
-  projectId: ,
-  storageBucket: ,
-  messagingSenderId:,
-  appId: ,
-  measurementId: 
+  apiKey: Constants.expoConfig?.extra?.APIKEY,
+  authDomain: Constants.expoConfig?.extra?.AUTHDOMAIN,
+  projectId: Constants.expoConfig?.extra?.PROJECTID,
+  storageBucket: Constants.expoConfig?.extra?.STORAGEBUCKET,
+  messagingSenderId: Constants.expoConfig?.extra?.MESSAGINGSENDERID,
+  appId: Constants.expoConfig?.extra?.APPID,
+  measurementId: Constants.expoConfig?.extra?.MEASUREMENTID,
+};
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+export const app = initializeApp(firebaseConfig);
+export const analytics = getAnalytics(app);

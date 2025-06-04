@@ -10,7 +10,13 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Copy the `.env.example` file to `.env` and add your Firebase credentials:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Start the app
 
    ```bash
    npx expo start
