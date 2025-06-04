@@ -10,7 +10,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Copy the `.env.example` file to `.env` and add your Firebase credentials:
+2. Copy the `.env.example` file to `.env` and add your Firebase credentials. If these values are missing you'll see Firebase configuration errors (e.g. `missing-app-config-values`):
 
    ```bash
    cp .env.example .env
