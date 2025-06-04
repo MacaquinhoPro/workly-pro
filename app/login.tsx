@@ -15,7 +15,7 @@ import Constants from 'expo-constants';
 
 WebBrowser.maybeCompleteAuthSession();
 
-export default function Login() {
+const Login = () => {
   const router = useRouter();
   const auth = getAuth(app);
   const [email, setEmail] = useState('');
@@ -82,4 +82,6 @@ export default function Login() {
       <Button title="Register" onPress={() => router.push('/register')} />
     </View>
   );
-}
+};
+
+export default Login;

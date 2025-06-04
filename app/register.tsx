@@ -4,7 +4,7 @@ import { Button, Text, TextInput, View } from 'react-native';
 import { app } from '@/utils/firebaseconfig';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
-export default function Register() {
+const Register = () => {
   const router = useRouter();
   const auth = getAuth(app);
   const [email, setEmail] = useState('');
@@ -43,4 +43,6 @@ export default function Register() {
       <Button title="Back to Login" onPress={() => router.back()} />
     </View>
   );
-}
+};
+
+export default Register;
