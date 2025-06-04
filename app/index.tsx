@@ -4,7 +4,7 @@ import { Button, Text, View } from 'react-native';
 import { app } from '@/utils/firebaseconfig';
 import { getAuth, onAuthStateChanged, signOut, User } from 'firebase/auth';
 
-export default function Index() {
+const Index = () => {
   const router = useRouter();
   const auth = getAuth(app);
   const [user, setUser] = useState<User | null>(auth.currentUser);
@@ -42,4 +42,6 @@ export default function Index() {
       <Button title="Logout" onPress={logout} />
     </View>
   );
-}
+};
+
+export default Index;
