@@ -1,6 +1,7 @@
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
+// utils/firebaseconfig.ts
 import Constants from 'expo-constants';
+import { getApps, initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: Constants.expoConfig?.extra?.APIKEY,
@@ -12,6 +13,9 @@ const firebaseConfig = {
   measurementId: Constants.expoConfig?.extra?.MEASUREMENTID,
 };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(app);
+const app = getApps().length === 0
+  ? initializeApp(firebaseConfig)
+  : getApps()[0];
+
+// getAuth() sin initializeAuth → persistencia en memoria (no se guarda entre sesiones)
+export const auth = getAuth(app);

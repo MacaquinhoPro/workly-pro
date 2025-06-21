@@ -1,47 +1,38 @@
+// app/index.tsx
+import { auth } from '@/utils/firebaseconfig';
 import { useRouter } from 'expo-router';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { Button, Text, View } from 'react-native';
-import { app } from '@/utils/firebaseconfig';
-import { getAuth, onAuthStateChanged, signOut, User } from 'firebase/auth';
+import { ActivityIndicator, Button, Text, View } from 'react-native';
 
-const Index = () => {
+export default function Index() {
   const router = useRouter();
-  const auth = getAuth(app);
-  const [user, setUser] = useState<User | null>(auth.currentUser);
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState(auth.currentUser);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      if (!u) router.replace('/login');
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      setUser(usr);
+      if (!usr) {
+        router.replace('/login');
+      }
+      if (initializing) setInitializing(false);
     });
-    return unsub;
-  }, [auth, router]);
+    return unsubscribe;
+  }, []);
 
-  const logout = async () => {
-    await signOut(auth);
-  };
-
-  if (!user) {
+  if (initializing) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Loading...</Text>
+        <ActivityIndicator />
       </View>
     );
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Text>Welcome {user.email}</Text>
-      <View style={{ height: 12 }} />
-      <Button title="Logout" onPress={logout} />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+      <Text style={{ marginBottom: 20 }}>¡Bienvenido, {user?.email}!</Text>
+      <Button title="Cerrar sesión" onPress={() => signOut(auth)} />
     </View>
   );
-};
-
-export default Index;
+}

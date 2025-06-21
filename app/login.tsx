@@ -1,48 +1,22 @@
-import { app } from '@/utils/firebaseconfig';
-import * as Google from 'expo-auth-session/providers/google';
-import Constants from 'expo-constants';
+import { auth } from '@/utils/firebaseconfig';
 import { useRouter } from 'expo-router';
-import * as WebBrowser from 'expo-web-browser';
-import {
-  getAuth,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithCredential,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
+import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
 
-WebBrowser.maybeCompleteAuthSession();
-
-const Login = () => {
+export default function Login() {
   const router = useRouter();
-  const auth = getAuth(app);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    clientId: Constants.expoConfig?.extra?.GOOGLE_EXPO_CLIENT_ID,
-    iosClientId: Constants.expoConfig?.extra?.GOOGLE_IOS_CLIENT_ID,
-    androidClientId: Constants.expoConfig?.extra?.GOOGLE_ANDROID_CLIENT_ID,
-    webClientId: Constants.expoConfig?.extra?.GOOGLE_WEB_CLIENT_ID,
-  });
-
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const { id_token, access_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token, access_token);
-      signInWithCredential(auth, credential).catch((e) => setError(e.message));
-    }
-  }, [response, auth]);
-
+  // Si ya hay usuario, redirige
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       if (u) router.replace('/');
     });
     return unsub;
-  }, [auth, router]);
+  }, []);
 
   const login = async () => {
     setError('');
@@ -70,18 +44,10 @@ const Login = () => {
         secureTextEntry
         style={{ borderWidth: 1, marginBottom: 12, padding: 8 }}
       />
-      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
+      {error ? <Text style={{ color: 'red', marginBottom: 12 }}>{error}</Text> : null}
       <Button title="Login" onPress={login} />
-      <View style={{ height: 12 }} />
-      <Button
-        title="Login with Google"
-        disabled={!request}
-        onPress={() => promptAsync()}
-      />
       <View style={{ height: 12 }} />
       <Button title="Register" onPress={() => router.push('/register')} />
     </View>
   );
-};
-
-export default Login;
+}
