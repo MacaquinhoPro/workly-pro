@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import tw from 'twrnc';
 import { app } from '@/utils/firebaseconfig';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
@@ -22,25 +23,35 @@ const Register = () => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', padding: 20 }}>
+    <View style={tw`flex-1 justify-center items-center p-5 bg-white`}>
       <TextInput
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
-        style={{ borderWidth: 1, marginBottom: 12, padding: 8 }}
+        style={tw`w-full border mb-3 p-2 rounded`}
       />
       <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        style={{ borderWidth: 1, marginBottom: 12, padding: 8 }}
+        style={tw`w-full border mb-3 p-2 rounded`}
       />
-      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
-      <Button title="Create account" onPress={register} />
-      <View style={{ height: 12 }} />
-      <Button title="Back to Login" onPress={() => router.back()} />
+      {error ? <Text style={tw`text-red-500 mb-3`}>{error}</Text> : null}
+      <TouchableOpacity
+        onPress={register}
+        style={tw`w-full bg-blue-500 py-3 rounded`}
+      >
+        <Text style={tw`text-white text-center font-semibold`}>Create account</Text>
+      </TouchableOpacity>
+      <View style={tw`h-3`} />
+      <TouchableOpacity
+        onPress={() => router.back()}
+        style={tw`w-full bg-gray-500 py-3 rounded`}
+      >
+        <Text style={tw`text-white text-center font-semibold`}>Back to Login</Text>
+      </TouchableOpacity>
     </View>
   );
 };
