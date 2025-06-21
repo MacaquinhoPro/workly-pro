@@ -29,32 +29,52 @@ export default function Login() {
   };
 
   return (
+
+    <View className="flex-1 justify-center items-center p-5 bg-white">
+
     <View className="flex-1 justify-center p-5 bg-white">
+
       <TextInput
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
+
+        className="w-full border mb-3 p-2 rounded"
+
         className="border mb-3 p-2 rounded"
+
       />
       <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+
+        className="w-full border mb-3 p-2 rounded"
+
         className="border mb-3 p-2 rounded"
+
       />
       {error ? <Text className="text-red-500 mb-3">{error}</Text> : null}
       <TouchableOpacity
         onPress={login}
+
+        className="w-full bg-blue-500 py-3 rounded"
+
         className="bg-blue-500 py-3 rounded"
+
       >
         <Text className="text-white text-center font-semibold">Login</Text>
       </TouchableOpacity>
       <View className="h-3" />
       <TouchableOpacity
         onPress={() => router.push('/register')}
+
+        className="w-full bg-gray-500 py-3 rounded"
+
         className="bg-gray-500 py-3 rounded"
+
       >
         <Text className="text-white text-center font-semibold">Register</Text>
       </TouchableOpacity>
