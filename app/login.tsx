@@ -2,7 +2,16 @@ import { auth } from '@/utils/firebaseconfig';
 import { useRouter } from 'expo-router';
 import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default function Login() {
   const router = useRouter();
@@ -10,10 +19,9 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // Si ya hay usuario, redirige
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
-      if (u) router.replace('/');
+      if (u) router.replace('/feed');
     });
     return unsub;
   }, []);
@@ -22,62 +30,124 @@ export default function Login() {
     setError('');
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.replace('/');
+      router.replace('/feed');
     } catch (e: any) {
       setError(e.message);
     }
   };
 
   return (
-
-    <View className="flex-1 justify-center items-center p-5 bg-white">
-
-    <View className="flex-1 justify-center p-5 bg-white">
-
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-
-        className="w-full border mb-3 p-2 rounded"
-
-        className="border mb-3 p-2 rounded"
-
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-
-        className="w-full border mb-3 p-2 rounded"
-
-        className="border mb-3 p-2 rounded"
-
-      />
-      {error ? <Text className="text-red-500 mb-3">{error}</Text> : null}
-      <TouchableOpacity
-        onPress={login}
-
-        className="w-full bg-blue-500 py-3 rounded"
-
-        className="bg-blue-500 py-3 rounded"
-
+    <SafeAreaView style={styles.safe}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.container}
       >
-        <Text className="text-white text-center font-semibold">Login</Text>
-      </TouchableOpacity>
-      <View className="h-3" />
-      <TouchableOpacity
-        onPress={() => router.push('/register')}
+        <View style={styles.box}>
+          <Text style={styles.title}>Workly</Text>
 
-        className="w-full bg-gray-500 py-3 rounded"
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor="#A1A1AA"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            style={styles.input}
+          />
 
-        className="bg-gray-500 py-3 rounded"
+          <TextInput
+            placeholder="Password"
+            placeholderTextColor="#A1A1AA"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            style={styles.input}
+          />
 
-      >
-        <Text className="text-white text-center font-semibold">Register</Text>
-      </TouchableOpacity>
-    </View>
+          {error ? <Text style={styles.error}>{error}</Text> : null}
+
+          <TouchableOpacity onPress={login} style={styles.button}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => router.push('/register')}
+            style={styles.secondaryButton}
+          >
+            <Text style={styles.secondaryText}>
+              Don't have an account? <Text style={styles.link}>Register</Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  safe: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+  },
+  box: {
+    width: '100%',
+    maxWidth: 400,
+    alignSelf: 'center',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#1f2937',
+    textAlign: 'center',
+    marginBottom: 32,
+  },
+  input: {
+    backgroundColor: '#f3f4f6',
+    color: '#111827',
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    marginBottom: 16,
+  },
+  button: {
+    backgroundColor: '#6366f1',
+    paddingVertical: 14,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  buttonText: {
+    color: '#ffffff',
+    textAlign: 'center',
+    fontWeight: '600',
+    fontSize: 16,
+  },
+  secondaryButton: {
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderColor: '#d1d5db',
+    borderWidth: 1,
+  },
+  secondaryText: {
+    color: '#6b7280',
+    textAlign: 'center',
+    fontWeight: '500',
+    fontSize: 14,
+  },
+  link: {
+    color: '#6366f1',
+    fontWeight: '600',
+  },
+  error: {
+    color: '#ef4444',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+});
